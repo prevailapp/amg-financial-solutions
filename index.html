@@ -1064,14 +1064,30 @@
   }, { threshold: 0.1 });
 
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+// Form submission — connected to Prevail
+document.getElementById('leadForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const inputs = this.querySelectorAll('input, select');
+  const data = {
+    captureId: '8838fa55',
+    firstName: inputs[0].value,
+    lastName: inputs[1].value,
+    email: inputs[2].value,
+    phone: inputs[3].value,
+    state: inputs[4].value,
+    type: 'IUL',
+    source: 'amgfinancialsolutions.org'
+  };
+  try {
+    await fetch('https://prevail-git-main-prevail1.vercel.app/api/leads/capture', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+  } catch(err) { console.error(err); }
+  this.style.display = 'none';
+  document.getElementById('successMsg').style.display = 'block';
+});
 
-  // Form submission
-  document.getElementById('leadForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    this.style.display = 'none';
-    document.getElementById('successMsg').style.display = 'block';
-    // In production, connect to your backend or Netlify Forms here
-  });
-</script>
 </body>
 </html>
